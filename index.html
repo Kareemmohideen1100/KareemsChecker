@@ -1,24 +1,301 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Yaara intha Paiyan?</title>
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Sacramento&display=swap">
-    <link rel="stylesheet" href="style.css"> <!-- Link to external stylesheet -->
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Happy Birthday!</title>
+  <style>
+    body {
+      background: linear-gradient(to right, #6a0dad, #4b0082);
+      font-family: 'Comic Sans MS', cursive, sans-serif;
+      text-align: center;
+      color: #f0e6f0; /* Lighter text color for readability */
+      padding: 20px;
+      margin: 0;
+    }
+
+    h1 {
+      font-size: 2.2em;
+      color: #ffccff;
+      animation: bounce 2s infinite;
+      margin-bottom: 10px;
+    }
+
+    @keyframes bounce {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-10px); }
+    }
+
+    p {
+      font-size: 1.2em;
+      margin: 10px 0;
+      color: #e0b3ff; /* Lighter purple text */
+    }
+
+    .cake {
+      font-size: 3.5em;
+      animation: flicker 1s infinite alternate;
+    }
+
+    @keyframes flicker {
+      from { opacity: 1; }
+      to { opacity: 0.6; }
+    }
+
+    .card {
+      background: #2a0037;
+      padding: 20px;
+      border-radius: 20px;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.5);
+      max-width: 95%;
+      margin: 20px auto;
+    }
+
+    .btn {
+      display: inline-block;
+      margin-top: 20px;
+      padding: 12px 25px;
+      background: #ff69b4;
+      color: white;
+      border: none;
+      border-radius: 10px;
+      text-decoration: none;
+      font-size: 1.1em;
+      transition: background 0.3s;
+      cursor: pointer;
+    }
+
+    .btn:hover {
+      background: #ff1493;
+    }
+
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: 10;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0,0,0,0.7);
+      justify-content: center;
+      align-items: center;
+    }
+
+    .modal-content {
+      background: #fff;
+      padding: 10px;
+      border-radius: 15px;
+      max-width: 90%;
+      width: 300px;
+    }
+
+    video {
+      width: 100%;
+      height: auto;
+      border-radius: 10px;
+      display: block;
+    }
+
+    #nextBtn, #newBtn {
+      display: none;
+    }
+
+    #questionText, #newQuestionText {
+      display: none;
+      font-size: 1.1em;
+      margin-top: 20px;
+      color: #e0b3ff;
+    }
+
+    #newQuestionText {
+      color: #ff1493;
+    }
+
+    .carousel-container {
+      display: none;
+      margin-top: 20px;
+      text-align: center;
+    }
+
+    .carousel-item {
+      display: none;
+      font-size: 1.2em;
+      margin: 20px auto;
+      padding: 15px;
+      background-color: #3e1a5c;
+      border-radius: 10px;
+      max-width: 80%;
+      margin-bottom: 15px;
+    }
+
+    .carousel-item.active {
+      display: block;
+    }
+
+    .carousel-btn {
+      margin-top: 20px;
+      padding: 10px 20px;
+      background-color: #ff1493;
+      color: white;
+      border: none;
+      border-radius: 10px;
+      font-size: 1em;
+      cursor: pointer;
+    }
+
+    .carousel-btn:hover {
+      background-color: #ff69b4;
+    }
+
+    @keyframes bounceText {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.2); }
+    }
+
+    #finalCelebration {
+      display: none;
+    }
+
+  </style>
 </head>
 <body>
-    <div id="container">
-        <div id="image-container"></div> <!-- Container for displaying images -->
-        <div id="text-container">
-            <div id="question">Kareem ah ungaluku evlo pudikum noor fathima avargalae?</div> <!-- Question -->
-            <div id="options">
-                <button id="yes-button" onclick="selectOption('yes')">Yes</button> <!-- Yes button -->
-                <button id="no-button" onclick="selectOption('no')">No</button> <!-- No button -->
-            </div>
-        </div>
-    </div>
 
-    <script src="script.js"></script> <!-- Link to external JavaScript file -->
+  <div class="card" id="initialCard">
+    <div class="cake">🎂</div>
+    <h1>Happy Birthday, Dr.J Noor Fathima!!!!</h1>
+    <p>Wishing you a day filled with love, laughter, and joy.</p>
+    <p>May all your dreams come true today and always!</p>
+
+    <button class="btn" id="surpriseBtn" onclick="showPopup()">Click for a Surprise!</button>
+
+    <p id="questionText">
+      Have you ever wondered why I like you so much? 💭<br>
+      Tap the button below to find out 💗
+    </p>
+    <button class="btn" id="nextBtn" onclick="showQuote()">See What's Next 🎁</button>
+  </div>
+
+  <div class="modal" id="videoModal">
+    <div class="modal-content">
+      <video id="birthdayVideo" autoplay controls playsinline>
+        <source src="Batman.mp4" type="video/mp4" />
+        Your browser does not support the video tag.
+      </video>
+    </div>
+  </div>
+
+  <div class="modal" id="quoteModal">
+    <div class="modal-content">
+      <p>
+        I dunno if you'd explain breathing?<br><br>
+        I just do endlessly!!!!
+      </p>
+    </div>
+  </div>
+
+  <div class="hide-when-carousel" id="newContent">
+    <p id="newQuestionText">
+      You know what? You proved me something true? 🥰
+    </p>
+    <button class="btn" id="newBtn" onclick="showSomethingTrue()">Click me to know it 💖</button>
+  </div>
+
+  <div class="modal" id="finalQuoteModal">
+    <div class="modal-content">
+      <p>"You fall in love with a pair of eyes, and then you become blind to all other eyes." 💖</p>
+    </div>
+  </div>
+
+  <div class="carousel-container" id="carouselContainer">
+    <div class="carousel-item active">
+      <p>I didn’t fall in like with you because I needed a relationship.</p>
+    </div>
+    <div class="carousel-item">
+      <p>I liked you because in your presence, I found a sense of peace I never knew I was missing.</p>
+    </div>
+    <div class="carousel-item">
+      <p>I didn’t fall for you out of loneliness; I fell for you because your soul felt like home.</p>
+    </div>
+    <button class="carousel-btn" onclick="nextCarousel()">Next</button>
+  </div>
+
+  <div class="modal" id="finalVideoModal">
+    <div class="modal-content">
+      <video id="finalVideo" autoplay controls playsinline>
+        <source src="Batman2.mp4" type="video/mp4" />
+        Your browser does not support the video tag.
+      </video>
+    </div>
+  </div>
+
+  <div id="finalCelebration">
+    <h1 style="font-size: 3em; color: #cabbd7; animation: bounceText 1s infinite; margin-top: 50px;">
+      🎉 Happy 23rd Birthday! 🎈🍎
+    </h1>
+  </div>
+
+  <script>
+    function showPopup() {
+      document.getElementById("surpriseBtn").style.display = "none";
+      const videoModal = document.getElementById("videoModal");
+      const video = document.getElementById("birthdayVideo");
+      videoModal.style.display = "flex";
+
+      video.onended = () => {
+        videoModal.style.display = "none";
+        document.getElementById("questionText").style.display = "block";
+        document.getElementById("nextBtn").style.display = "inline-block";
+      };
+    }
+
+    function showQuote() {
+      const quoteModal = document.getElementById("quoteModal");
+      quoteModal.style.display = "flex";
+
+      setTimeout(() => {
+        quoteModal.style.display = "none";
+        document.getElementById("questionText").style.display = "none";
+        document.getElementById("nextBtn").style.display = "none";
+        document.getElementById("newQuestionText").style.display = "block";
+        document.getElementById("newBtn").style.display = "inline-block";
+      }, 5000);
+    }
+
+    function showSomethingTrue() {
+      const finalQuoteModal = document.getElementById("finalQuoteModal");
+      finalQuoteModal.style.display = "flex";
+
+      setTimeout(() => {
+        finalQuoteModal.style.display = "none";
+        document.getElementById("carouselContainer").style.display = "block";
+        hideAllContent();
+      }, 5000);
+    }
+
+    let carouselIndex = 0;
+    function nextCarousel() {
+      const items = document.querySelectorAll(".carousel-item");
+      items[carouselIndex].classList.remove("active");
+      carouselIndex++;
+
+      if (carouselIndex >= items.length) {
+        document.getElementById("carouselContainer").style.display = "none";
+        document.getElementById("finalVideoModal").style.display = "flex";
+        const finalVideo = document.getElementById("finalVideo");
+        finalVideo.onended = () => {
+          document.getElementById("finalVideoModal").style.display = "none";
+          document.getElementById("finalCelebration").style.display = "block";
+        };
+      } else {
+        items[carouselIndex].classList.add("active");
+      }
+    }
+
+    function hideAllContent() {
+      document.getElementById("initialCard").style.display = "none";
+      document.getElementById("newContent").style.display = "none";
+    }
+  </script>
 </body>
 </html>
